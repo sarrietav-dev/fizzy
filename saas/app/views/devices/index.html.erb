@@ -27,7 +27,7 @@
     <p class="margin-none-block-start">Mobile devices registered with the mobile app will receive push notifications and will be listed here.</p>
   <% end %>
 
-  <%= link_to session_menu_path, class: "btn center txt-small margin-block-start hide-on-native", data: { turbo_prefetch: false } do %>
+  <%= link_to session_menu_path(script_name: nil), class: "btn center txt-small margin-block-start hide-on-native", data: { turbo_prefetch: false } do %>
     <span>Your Fizzy accounts</span>
   <% end %>
 </section>
