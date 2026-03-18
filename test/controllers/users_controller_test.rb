@@ -37,7 +37,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       delete user_path(users(:david))
     end
 
-    assert_redirected_to users_path
+    assert_redirected_to account_settings_path
     assert_nil User.active.find_by(id: users(:david).id)
   end
 
@@ -143,5 +143,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :no_content
+  end
+
+  test "index avoids N+1 queries on identity" do
+    sign_in_as :kevin
+
+    assert_queries_match(/FROM [`"]identities[`"].* IN \(/, count: 1) do
+      get users_path, as: :json
+      assert_response :success
+    end
+
+    json = @response.parsed_body
+    assert json.first["email_address"].present?
   end
 end

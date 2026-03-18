@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   root "events#index"
 
   namespace :account do
+    resource :cancellation, only: [ :create ]
     resource :entropy
     resource :join_code
     resource :settings
     resources :exports, only: [ :create, :show ]
+    resources :imports, only: [ :new, :create, :show ]
   end
 
   resources :users do
@@ -19,6 +21,8 @@ Rails.application.routes.draw do
       resources :email_addresses, param: :token do
         resource :confirmation, module: :email_addresses
       end
+
+      resources :data_exports, only: [ :create, :show ]
     end
   end
 
@@ -71,6 +75,7 @@ Rails.application.routes.draw do
 
   resources :cards do
     scope module: :cards do
+      resource :draft, only: :show
       resource :board
       resource :closure
       resource :column
@@ -84,7 +89,10 @@ Rails.application.routes.draw do
       resource :watch
       resource :reading
 
+      resources :reactions
+
       resources :assignments
+      resource :self_assignment, only: :create
       resources :steps
       resources :taggings
 
@@ -236,6 +244,10 @@ Rails.application.routes.draw do
   get "up", to: "rails/health#show", as: :rails_health_check
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   get "service-worker" => "pwa#service_worker"
+
+  # Mobile clients
+  get "client_configurations/(:platform)_v(:version)" => "client_configurations#show",
+    platform: /android|ios/, version: /\d+/
 
   namespace :admin do
     mount MissionControl::Jobs::Engine, at: "/jobs"

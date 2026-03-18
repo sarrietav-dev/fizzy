@@ -16,9 +16,11 @@
 
 <div data-controller="beacon lightbox" data-beacon-url-value="<%= card_reading_path(@card) %>">
   <%= render "cards/container", card: @card %>
-  <%= render "cards/messages",  card: @card unless @card.drafted? %>
+  <%= render "cards/messages",  card: @card %>
 
   <%= render "layouts/lightbox" do %>
     <%= button_to_remove_card_image(@card) if @card.image.attached? %>
   <% end %>
 </div>
+
+<%= bridged_share_url_button(bridge_share_card_description(@card)) %>

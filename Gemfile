@@ -8,7 +8,7 @@ gem "rails", github: "rails/rails", branch: "main"
 gem "importmap-rails"
 gem "propshaft"
 gem "stimulus-rails"
-gem "turbo-rails"
+gem "turbo-rails", github: "hotwired/turbo-rails", branch: "offline-cache"
 
 # Deployment and drivers
 gem "bootsnap", require: false
@@ -16,31 +16,31 @@ gem "kamal", require: false
 gem "puma", ">= 5.0"
 gem "solid_cable", ">= 3.0"
 gem "solid_cache", "~> 1.0"
-gem "solid_queue", "~> 1.2"
+gem "solid_queue", "~> 1.3"
 gem "sqlite3", ">= 2.0"
 gem "thruster", require: false
-gem "trilogy", "~> 2.9"
+gem "trilogy", "~> 2.10"
 
 # Features
 gem "bcrypt", "~> 3.1.7"
 gem "geared_pagination", "~> 1.2"
 gem "rqrcode"
-gem "redcarpet"
 gem "rouge"
 gem "jbuilder"
-gem "lexxy", bc: "lexxy"
+gem "lexxy", "0.8.5.beta"
 gem "image_processing", "~> 1.14"
 gem "platform_agent"
 gem "aws-sdk-s3", require: false
 gem "web-push"
 gem "net-http-persistent"
-gem "rubyzip", require: "zip"
+gem "zip_kit"
 gem "mittens"
 gem "useragent", bc: "useragent"
 
 # Operations
 gem "autotuner"
 gem "mission_control-jobs"
+gem "stackprof"
 gem "benchmark" # indirect dependency, being removed from Ruby 3.5 stdlib so here to quash warnings
 
 group :development, :test do
@@ -54,7 +54,7 @@ group :development, :test do
 end
 
 group :development do
-  gem "web-console"
+  gem "web-console", github: "rails/web-console"
 end
 
 group :test do
