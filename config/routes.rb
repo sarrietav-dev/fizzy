@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     scope module: :users do
       resource :avatar
       resource :role
+      resource :permission, only: :update
       resource :events
       resources :push_subscriptions
 

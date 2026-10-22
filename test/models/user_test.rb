@@ -33,6 +33,22 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test "can create boards by default" do
+    assert users(:david).can_create_board?
+  end
+
+  test "admins can create boards regardless of the permission" do
+    users(:kevin).update! can_create_boards: false
+
+    assert users(:kevin).can_create_board?
+  end
+
+  test "members without the permission cannot create boards" do
+    users(:david).update! can_create_boards: false
+
+    assert_not users(:david).can_create_board?
+  end
+
   test "initials" do
     assert_equal "JF", User.new(name: "jason fried").initials
     assert_equal "DHH", User.new(name: "David Heinemeier Hansson").initials

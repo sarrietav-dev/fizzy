@@ -4,6 +4,7 @@ class BoardsController < ApplicationController
   include ArchivedBoardGuard, FilterScoped
 
   before_action :set_board, except: %i[ index new create ]
+  before_action :ensure_permission_to_create_board, only: %i[ new create ]
   before_action :ensure_permission_to_admin_board, only: %i[ update destroy ]
   before_action :ensure_board_is_active, only: %i[ update ]
 
@@ -81,6 +82,10 @@ class BoardsController < ApplicationController
       else
         Current.user.boards.active
       end
+    end
+
+    def ensure_permission_to_create_board
+      head :forbidden unless Current.user.can_create_board?
     end
 
     def ensure_permission_to_admin_board

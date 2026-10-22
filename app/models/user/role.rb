@@ -22,6 +22,10 @@ module User::Role
     admin? && !other.owner? && other != self
   end
 
+  def can_create_board?
+    admin? || can_create_boards?
+  end
+
   def can_administer_board?(board)
     admin? || board.creator == self
   end

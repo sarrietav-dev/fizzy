@@ -10,6 +10,14 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "new requires permission to create boards" do
+    users(:david).update! can_create_boards: false
+    logout_and_sign_in_as :david
+
+    get new_board_path
+    assert_response :forbidden
+  end
+
   test "show" do
     get board_path(boards(:writebook))
     assert_response :success
@@ -34,6 +42,17 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to board_path(board)
     assert_includes board.users, users(:kevin)
     assert_equal "Remodel Punch List", board.name
+  end
+
+  test "create requires permission to create boards" do
+    users(:david).update! can_create_boards: false
+    logout_and_sign_in_as :david
+
+    assert_no_difference -> { Board.count } do
+      post boards_path, params: { board: { name: "Remodel Punch List" } }
+    end
+
+    assert_response :forbidden
   end
 
   test "edit" do

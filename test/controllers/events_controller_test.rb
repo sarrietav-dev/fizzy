@@ -16,6 +16,16 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "index does not offer to add boards when the user cannot create them" do
+    users(:david).update! can_create_boards: false
+    logout_and_sign_in_as :david
+
+    get events_path
+
+    assert_response :success
+    assert_select "a", text: /Add a board/, count: 0
+  end
+
   test "index with a specific timezone" do
     cookies[:timezone] = "America/New_York"
 

@@ -19,6 +19,16 @@
     </span>
   <% end %>
 
+  <%= form_with model: user, url: user_permission_path(user), data: { controller: "form" }, method: :patch do | form | %>
+    <span title="<%= can_create_boards_display_name(user) %>">
+      <label class="btn btn--circle" for="<%= dom_id(user, :can_create_boards) %>" aria-label="<%= can_create_boards_display_name(user) %>">
+        <%= icon_tag "board" %>
+        <span class="for-screen-reader"><%= can_create_boards_display_name(user) %></span>
+        <%= form.check_box :can_create_boards, { data: { action: "form#submit" }, disabled: !Current.user.can_administer?(user), checked: user.can_create_board?, hidden: true, id: dom_id(user, :can_create_boards) }, "1", "0" %>
+      </label>
+    </span>
+  <% end %>
+
   <%# FIXME: Move this Current.user check to a stimulus controller that just checks for admin? or the like we so we can cache user list %>
   <%= button_to user, method: :delete, class: "btn btn--circle btn--negative",
         disabled: !Current.user.can_administer?(user),
